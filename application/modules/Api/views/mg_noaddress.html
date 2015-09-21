@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection"> 
+    <meta name="format-detection" content="telephone=no" />
+    <title>收货地址</title>
+    <link rel="stylesheet" type="text/css"  href="/static/css/no_add.css" />
+</head>
+<body>
+	<div id="noadd_wrap">
+			<img src="/static/images/or_pic16.png" />
+			<p>没有收货地址，添加一个吧！</p>
+			<a href="/api/addressinfo/addaddress?linkfrom=1&session_id={$session_id}&default=y">添加新地址</a>
+	</div>
+</body>
+</html>

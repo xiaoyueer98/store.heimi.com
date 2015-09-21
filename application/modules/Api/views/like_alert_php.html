@@ -1,0 +1,78 @@
+<style>
+html {font-size: 62.5%;/*10 ÷ 16 × 100% = 62.5%*/}
+body {font-size: 1.4rem;/*1.4 × 10px = 14px */}
+body{_overflow:auto;_height:100%;margin:0 auto;font: 13px/1.231 arial,helvetica,clean,sans-serif;}   
+#alert_zhezhao_just{
+	width: 100%;
+	height:100%;
+	position: fixed;
+	left: 0;
+	top: 0;
+	background: url(/static/images/or_pic17.png) no-repeat;
+	background-size: 100% 100%;
+	display: none;
+}
+
+#alert_just{
+	width: 240px;
+	height: auto;
+	position: fixed;
+	top:150px;
+	left: 50%;
+	margin-left: -120px;
+	background: #eae8ea;
+	border-radius: 10px;
+	
+}
+
+#alert_just p{
+	font-size: 1.5rem;
+	text-align: center;
+	padding: 18px 0;
+	color: #ff4400;
+	font-weight: bold;
+}
+
+
+#alert_just span{
+	text-align: center;
+	line-height: 40px;
+	font-size: 1.5rem;
+	border-top:1px solid #c4c4c4;
+	display: block;
+}
+
+</style>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="format-detection" content="telephone=no" />
+<div id="alert_zhezhao_just">
+    
+    <div id="alert_just">
+        <p id="alert_title_just"></p>
+        <span id="alert_hide_just">确定</span>
+    </div>
+</div>
+<script src='/static/js/jquery-1.7.min.js' type='text/javascript'></script>
+<script type="text/javascript">
+    //like_alert("是否要删除？");
+    //调用这个方法的前提是，引入了jquery
+    function  like_alert_just(title,url,documenttitle)
+    {
+        
+        var documenttitle = typeof(arguments[2]) == "undefined" ? "登陆过期" : arguments[2];
+        document.title=documenttitle;
+        $("#alert_zhezhao_just").show();
+        $("#alert_title_just").text(title);
+        $("#alert_hide_just").click(function(){
+            //$("#alert_zhezhao_just").hide();
+            $("html , body").css("overflow-y" , "auto");
+            //alert(url);
+            location.href=url;
+        })
+     
+    }
+    
+</script>

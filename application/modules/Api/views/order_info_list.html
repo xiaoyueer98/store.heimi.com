@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="format-detection" content="telephone=no" />
+    <title>我的订单</title>
+    <link rel="stylesheet" type="text/css"  href="/static/css/order_info.css" />
+</head>
+<body>
+	<div id="order_wrap">
+		{loop $arOrders $key $val}
+		<div class="order_cont">
+               <div class="order_top">
+				   <span class="or_status" {if $val['status'] == 1} style="color:#ff4400;"{/if}>{$val['status_name']}</span>
+				   <span class="or_num">订单号:{$val['order_sn']} </span>
+				   <span class="remove" {if $val['status']==2 || $val['status']==3} style="visibility: hidden;"{/if}><input type="hidden" class='rm'  value="{$val['order_sn']}"></span>
+               </div> 
+
+			   <dl onclick='window.location="/api/order/detail?osn={$val['order_sn']}&session_id={$sid}"'>
+				   <dt><img src="{$val['picture']}" /></dt>
+                   <dd>
+				   <p class="or_tit">{$val['goods_name']}</p>
+				   <p class="or_cont">单价：￥<b>{$val['price']}</b>&nbsp&nbsp数量：<b>{$val['num']}</b>&nbsp&nbsp小计：￥<b>{$val['total_price']}</b></p>
+                   </dd>
+               </dl>  
+               {if $val['status'] !=4}
+               <div class="order_bot">
+				   <span>实付款:￥{$val['real_price']}</span>
+				   <a  {if $val['status']==1} href="javascript:void(0);" id="to_pay" class="to_pay"{else} href="hmbox://cn.747.box/goods?id={$val['goods_id']}" id="buy_2"{/if}>{$val['goto_name']}</a>
+               </div>
+               {/if}  
+        </div>
+		{/loop}
+	</div>
+	
+	<div id="order_sc">
+		<img src="/static/images/00.gif" />
+                <span> </span>
+		<p>正在前往支付宝支付...</p>
+                
+	</div>
+	<div id="confirm_zhezhao">
+		<div id="confirm">
+			<p>您确定要删除该订单吗？</p>
+			<ul>
+				<li style="border-right:1px solid #c4c4c4;" id="yes_remove">确定</li>
+				<li id="no_remove">取消</li>
+			</ul>
+		</div>
+
+		<div id="confirm_2" style="display:none">
+			<p id="confirm_cont">删除订单成功！</p>
+			<span id="confirm_hide">确定</span>
+		</div>
+	</div>
+
+	<input type='hidden' id='sid' value="{$sid}">
+	<script src="/static/js/jquery-1.7.min.js"></script>
+	<script>
+		$('.to_pay').click(function()
+		{
+			var osn = $(this).parent().siblings('.order_top').children('.remove').children('.rm').val();
+			var sid = $('#sid').val();
+			$("#order_sc").show();
+			$("html , body").css("overflow" , "hidden");
+			$.ajax({
+				url: "/api/order/payOrder",
+				data: "session_id=" + sid + "&osn=" + osn,
+				type: "POST",
+				dataType: "json",
+				success: function (re) {
+					$("#lodd").hide();
+					var code = re['code'];
+					if (code == '200') {
+						$("#order_sc").show();
+						$("html , body").css("overflow" , "hidden");
+						location.href = re['data'];
+						//$("#lodd").hide();
+						}else if(code == '500'){
+							$("#order_sc").hide();
+                                                        $("#confirm_2").show();
+							$("#confirm_cont").html("支付失败，请稍后重试！");
+							$("html , body").css("overflow-y" , "auto");
+					}
+
+				}
+			})
+		});
+		$('.remove').click(function()
+		{
+			$("#confirm_zhezhao").show();
+			$("html , body").css("overflow" , "hidden");
+			//var statu = confirm("您确定要删除该订单吗");
+			var osn = $(this).children('.rm').val();
+			var sid = $('#sid').val();
+			var no_remove = $("#no_remove");
+			var yes_remove = $("#yes_remove");
+
+			//取消删除订单
+			no_remove.on("click" , function (){
+					$("#confirm_zhezhao").hide()
+					$("html , body").css("overflow-y" , "auto");
+			})
+
+			//确认删除订单
+			yes_remove.on("click" , function (){
+				$("#confirm").hide();
+				$.ajax({
+					type:'POST',
+					url:'/api/order/del?stamp='+new Date().getTime(),
+					data:'osn='+osn+'&sid='+sid,
+					success:function(msg){
+						if(msg == '1')
+						{
+							//alert( '删除订单成功' );
+							//$("#confirm_cont").html("删除订单成功！");
+							location.reload();
+						}else if(msg == '2')
+						{
+                                                        $("#confirm_2").show();
+							$("#confirm_cont").html("删除订单失败，请重试！");
+							//alert( '删除订单失败，请重试' );
+						}else
+				   		{
+                                                        $("#confirm_2").show();
+				   			$("#confirm_cont").html("您登陆过期，请重新登陆！");
+							//alert('您登陆过期，请重新登陆');
+						}		
+					},
+					error:function(){
+                                                $("#confirm_2").show();
+						$("#confirm_cont").html("网络繁忙，请稍后重试！");
+						//alert( 'aaaa' );
+					}
+
+				});	
+			})
+
+			$("#confirm_hide").on("click" , function (){
+				$("#confirm_zhezhao").hide()
+				$("html , body").css("overflow-y" , "auto");
+				$("#confirm").show();
+				$("#confirm_2").hide();
+			})
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+        <meta content="yes" name="apple-mobile-web-app-capable">
+        <meta content="black" name="apple-mobile-web-app-status-bar-style">
+        <meta content="telephone=no" name="format-detection">
+
+        <meta name="format-detection" content="telephone=no" />
+        <title>修改收货地址</title>
+        <link rel="stylesheet" type="text/css"  href="/static/css/reset.css" />
+        <link rel="stylesheet" type="text/css"  href="/static/css/add.css" />
+        <script src="/static/js/jquery-1.7.min.js" type="text/javascript"></script>
+        <script src="/static/js/Area.js" type="text/javascript"></script>
+        <script src="/static/js/AreaData_min.js" type="text/javascript"></script>
+        <script src="/static/js/postcode.js" type="text/javascript"></script>
+
+        <script type="text/javascript">
+            $(function () {
+                var prov = "{$arAddressInfo['province']}";
+                var city = "{$arAddressInfo['city']}";
+                var distinct = "{$arAddressInfo['area']}";
+                var provId = getIDbyAreaName(prov, area_array);
+                var cityId = getIDbyAreaName(city, sub_array[provId]);
+                initComplexArea('seachprov', 'seachcity', 'seachdistrict', area_array, sub_array, provId, cityId);
+
+                if (distinct != '' && distinct != 0)
+                {
+                    var distinctId = getIDbyAreaName(distinct, sub_arr[cityId]);
+                    $('#seachdistrict').html("<option value='" + distinctId + "'>" + distinct + "</option>");
+                } else {
+                    $('#seachdistrict_div').css("display", "none");
+                }
+                //initComplexArea('seachprov', 'seachcity', 'seachdistrict', area_array, sub_array, '11', '0');
+                //changeComplexProvince(11, sub_array, 'seachcity', 'seachdistrict');
+            });
+
+            //得到地区码
+            function getAreaID() {
+                var area = 0;
+                if ($("#seachdistrict").val() != "0") {
+                    area = $("#seachdistrict").val();
+                } else if ($("#seachcity").val() != "0") {
+                    area = $("#seachcity").val();
+                } else {
+                    area = $("#seachprov").val();
+                }
+                return area;
+            }
+
+            function showAreaID() {
+                //地区码
+                var areaID = getAreaID();
+                //地区名
+                var areaName = getAreaNamebyID(areaID);
+                alert("您选择的地区码：" + areaID + "      地区名：" + areaName);
+                
+            }
+
+            //根据地区码查询地区名
+            function getAreaNamebyID(areaID) {
+                var areaName = "";
+                if (areaID.length == 2) {
+                    areaName = area_array[areaID];
+                } else if (areaID.length == 4) {
+                    var index1 = areaID.substring(0, 2);
+                    areaName = area_array[index1] + " " + sub_array[index1][areaID];
+                } else if (areaID.length == 6) {
+                    var index1 = areaID.substring(0, 2);
+                    var index2 = areaID.substring(0, 4);
+                    areaName = area_array[index1] + " " + sub_array[index1][index2] + " " + sub_arr[index2][areaID];
+                }
+                return areaName;
+            }
+            //根据地区名查询地区ID
+            function getIDbyAreaName(areaName, arr)
+            {
+                var areaID = "";
+                $.each(arr, function (key, val) {
+                    if (areaName == val)
+                    {
+                        areaID = key;
+                    }
+                });
+                return areaID;
+            }   
+           
+        </script>
+
+        
+    </head>
+    <body>
+        <form id="sub_form" action="/api/addressinfo/updateaddresssave" method="post">
+            <!--记录页面来自 由地址管理页面跳转或订单地址管理-->
+            <input type='hidden' name='linkfrom' value='{$linkfrom}'>
+            <input type='hidden' name='session_id' value='{$session_id}' id="session_id">
+            <input type='hidden' name='goods_id' value='{$goods_id}'>
+            <p>
+                <label>收货人</label>
+                <input type="text" id="username" placeholder="请输入收货人姓名" name="username" value="$arAddressInfo['name']"/>
+            </p>
+
+            <p>
+                <label>手机号码</label>
+                <input type="tel" maxlength="11" id="usertelephone" name="tel" value="$arAddressInfo['receive_tel']" placeholder="请输入收货人11位手机号码" />
+            </p>
+
+            <p>
+                <label>所在地区</label>
+                <select id="seachprov" name="seachprov" onChange="changeComplexProvince(this.value, sub_array, 'seachcity', 'seachdistrict');"></select>
+                <select id="seachcity" name="homecity" onChange="changeCity(this.value, 'seachdistrict', 'seachdistrict');"></select>
+                <span id="seachdistrict_div"><select id="seachdistrict" name="seachdistrict"></select></span>
+
+                <!--<input type="button"  value="获取地区" />-->
+            </p>
+
+            <p class="info">
+                <label>详细地址</label>
+                <textarea  placeholder="请输入街道门牌信息" name="detail"  id="userdetail">$arAddressInfo['detail']</textarea>
+            </p>
+
+            <p style="width:100%; margin-left:0;">
+                <label style="text-indent:2%">邮编</label>
+                <input type="text" placeholder="请输入邮编"  id="postcode" name="postcode" maxlength="6" value="$arAddressInfo['postcode']"  />
+            </p>
+
+            <!--<span class="say">销售暂不支持港澳台、新疆、西藏地区</span>-->
+            <span {if $arAddressInfo['is_default'] == 1 }class="defau_add" {else} class="no_defau_add" {/if} id="defau_add">设为默认收货地址</span>
+            <input type="hidden" id="homeprov" name="prov" value='' />
+            <input type="hidden" id="homecity" name="city" value='' />
+            <input type="hidden" id="homedistrict" name="distinct" value='' />
+            <input type="hidden"  name="default" value="1" id="default">
+            <input type="hidden" id="addressId" name="addressId" value="{$arAddressInfo['id']}" />
+
+            <div class="footer">
+                <a href="javascript:check();">保存地址</a>
+            </div>
+        </form>
+        {include like_alert.html}
+        <script type="text/javascript">
+            $("#postcode").blur(function(){
+                if(!checkPostcode(this.value)){
+                       //alert("请输入合法的邮编");
+                        like_alert("请输入合法的邮编");
+                }
+            })
+            $("#usertelephone").blur(function(){
+                if(!checkMobile(this.value)){
+                       //alert("请输入合法的手机号");
+                       like_alert("请输入合法的手机号");
+                }
+            })
+            
+            function check()
+            {
+                var session_id = $("#session_id").val();
+                //判断session_id是否存在
+                if (session_id == "") {
+                    like_alert("登录过期，请重新登录");
+                    return;
+                }
+                var error = '';
+                var error1 = '';
+                var is_error = 0;
+                var homeprov = '';
+                var homecity = '';
+                var homedistrict = '';
+                var username = stripscript($.trim($('#username').val()));
+                var usertelephone = $.trim($('#usertelephone').val());
+                var seachprov = $.trim($('#seachprov').val());
+                var seachcity = $.trim($('#seachcity').val());
+                var seachdistrict = $.trim($('#seachdistrict').val());
+                var userdetail = stripscript($.trim($('#userdetail').val()));
+                var postcode = $.trim($('#postcode').val());
+                if (username == '')
+                {
+                    error += '收货人不能为空\n';
+                    is_error = 1;
+                }
+                if (usertelephone == '')
+                {
+                    error += '收货人电话不能为空\n';
+                    is_error = 1;
+                } else if (!checkMobile(usertelephone)) {
+                    error += '收货人电话不符合规则\n';
+                    is_error = 1;
+                }
+
+                homeprov = getAreaNamebyID(seachprov);
+                $('#homeprov').val(homeprov);
+                if (seachprov == '')
+                {
+                    error += '收货地区不能为空\n';
+                    is_error = 1;
+                } else
+                {
+                    homecity = getAreaNamebyID(seachcity);
+                    $('#homecity').val(homecity);
+                }
+                if (seachdistrict != '')
+                {
+                    homedistrict = getAreaNamebyID(seachdistrict);
+                    $('#homedistrict').val(homedistrict);
+                }
+                if (homecity == '' || homecity == '0')
+                {
+                    error += '收货地区不能为空\n';
+                    is_error = 1;
+                }
+                if (userdetail == '')
+                {
+                    error += '收货详细地址不能为空\n';
+                    is_error = 1;
+                }
+                if (postcode == '')
+                {
+                    error += '邮编不能为空\n';
+                    is_error = 1;
+                } else{
+                    if(!checkPostcode(postcode)){
+                        error += '邮编不符合规则\n';
+                        is_error = 1;
+                    }
+                }
+                if (is_error > 0)
+                {
+                    like_alert("请完善收货信息");
+                    return false;
+                } else
+                {
+                    //like_confirm("确认修改该地址信息？");
+                    //$("#confirm_zhezhao").show();
+                    subAdr();
+
+                }
+            }
+          
+                    function subAdr() {
+                        $("#confirm_zhezhao_confirm").hide();
+                        var session_id = $("#session_id").val();
+                        var seachprov = $.trim($('#seachprov').val());
+                        var seachcity = $.trim($('#seachcity').val());
+                        var seachdistrict = $.trim($('#seachdistrict').val()); 
+                        var prov = getAreaNamebyID(seachprov);
+                        var city = getAreaNamebyID(seachcity);
+                        var distinct = getAreaNamebyID(seachdistrict);
+                        
+                        var defau_add = $("#defau_add")[0].className;
+                        if (defau_add == "defau_add") {
+                            var def = "1";
+                        } else {
+                            var def = "0";
+                        }
+                        var username = stripscript($("#username").val());
+                        var tel = $("#usertelephone").val();
+                        var detail = stripscript($("#userdetail").val());
+                        var postcode = $("#postcode").val();
+                        
+                        if(distinct == ""){
+                            var distincteq = ("$arAddressInfo['area']" == "0");
+                        }else{
+                            var distincteq = (distinct == city+" $arAddressInfo['area']");
+                        }
+                        //alert(username == "$arAddressInfo['name']" && tel=="$arAddressInfo['receive_tel']" && prov=="$arAddressInfo['province']" && city==prov+" $arAddressInfo['city']" && distincteq && detail=="$arAddressInfo['detail']" && postcode=="$arAddressInfo['postcode']" && def=="$arAddressInfo['is_default']");
+                        if(username == "$arAddressInfo['name']" && tel=="$arAddressInfo['receive_tel']" && prov=="$arAddressInfo['province']" && city==prov+" $arAddressInfo['city']" && distincteq && detail=="$arAddressInfo['detail']" && postcode=="$arAddressInfo['postcode']" && def=="$arAddressInfo['is_default']"){
+                                //alert(11);
+                                like_alert("修改地址成功");
+                                $("#confirm_hide").click(function(){
+                                    $("#confirm_zhezhao_alert").hide();
+                                    $("html , body").css("overflow-y", "auto");
+                                    if ("{$linkfrom}" == "1") {
+                                        location.href = "/api/addressinfo/index?session_id=" + session_id;
+                                    } else if ("{$linkfrom}" == "2") {
+                                        location.href = "/api/addressinfo/orderaddressmanage?session_id=" + session_id + "&goods_id={$goods_id}&addressId={$addressId_use}";
+                                    } else {
+                                        location.href = "/api/addressinfo/index?session_id=" + session_id;
+                                    }
+                                })
+                                return;
+                        }
+                        $.ajax({
+                            type: 'POST',
+                            url: '/api/addressinfo/updateaddresssave',
+                            data: 'addressId=' + {$arAddressInfo['id']} + '&session_id=' + session_id + '&default=' + def + "&prov=" + prov + "&city=" + city + "&distinct=" + distinct + '&username=' + username + "&detail=" + detail + "&tel=" + tel + "&postcode=" + postcode,
+                            datatype: "text",
+                            success: function (msg) {
+
+                                if (msg == '1')
+                                {
+                                    like_alert("修改地址成功");
+                                    $("#confirm_hide").click(function(){
+                                    $("#confirm_zhezhao_alert").hide();
+                                    $("html , body").css("overflow-y", "auto");
+                                        if ("{$linkfrom}" == "1") {
+                                            location.href = "/api/addressinfo/index?session_id=" + session_id;
+                                        } else if ("{$linkfrom}" == "2") {
+                                            location.href = "/api/addressinfo/orderaddressmanage?session_id=" + session_id + "&goods_id={$goods_id}&addressId={$addressId_use}";
+                                        } else {
+                                            location.href = "/api/addressinfo/index?session_id=" + session_id;
+                                        }
+                                   })
+
+                                } else if (msg == '2')
+                                {
+                                    like_alert("修改地址失败，请重试！");
+                               
+                                } else
+                                {
+                                    like_alert("您登陆过期，请重新登陆！");
+                               
+                                }
+                            },
+                            error: function () {
+                                like_alert("网络繁忙，请稍后重试！");
+                            }
+                               
+                          
+
+                        });
+
+                    }
+                    
+
+              
+            document.getElementById('defau_add').onclick = function () {
+                if($arAddressInfo['is_default'] == 1){
+                    return;
+                }else{
+                    this.className == 'defau_add' ? this.className = 'no_defau_add' : this.className = 'defau_add';
+                }
+            }
+        </script>
+        
+    </body>
+</html>

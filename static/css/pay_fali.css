@@ -1,0 +1,30 @@
+html {font-size: 62.5%;/*10 ÷ 16 × 100% = 62.5%*/}
+body {font-size: 1.4rem;/*1.4 × 10px = 14px */}
+body{_overflow:auto;_height:100%;margin:0 auto;font: 13px/1.231 arial,helvetica,clean,sans-serif;}
+*{
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+}
+html,body{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	background: #f0f0f6;
+	overflow: hidden;
+}
+
+img{
+	position: absolute;
+	width: 10rem;
+	top:57px;
+	left: 50%;
+	margin-left: -5rem;
+}
+
+p{
+	margin-top: 200px;
+	text-align: center;
+	color: #ff4400;
+	font-size: 1.8rem;
+}

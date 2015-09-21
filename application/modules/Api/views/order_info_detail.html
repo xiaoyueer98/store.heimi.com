@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="format-detection" content="telephone=no" />
+    <title>订单详情</title>
+    <link rel="stylesheet" type="text/css"  href="/static/css/order_info_2.css" />
+</head>
+<body>
+	<div id="or_in_wrap">
+		<div class="header">
+			<p>订单号：$arOrderInfo['order_sn']</p>
+			<p>商品总额：￥$arOrderInfo['total_price'] &nbsp&nbsp优惠：$arOrderInfo['saving_price']&nbsp&nbsp  运费：$arOrderInfo['trad']</p>
+			<p>实付款：￥$arOrderInfo['real_price']</p>
+			<p>订单状态：<b>$arOrderInfo['status_name']</b>  </p>
+		</div>
+
+		<div class="have_add">
+			<p>
+				<b class="name">$arOrderInfo['buyer_name']</b> <b class="tel">$arOrderInfo['buyer_telephone']</b>
+				<span>$arOrderInfo['buyer_address']</span>
+			</p>	
+		</div>
+
+		<div class="or_in_cont">
+			<h6>商品信息</h6>
+			<div class="box">
+				<span><img src="{$arOrderInfo['picture']}" /></span>
+               <div class="box_cont">
+                   <p class="or_tit">$arOrderInfo['goods_name']</p>
+                   <p class="or_cont">单价：￥<b>$arOrderInfo['price']</b>&nbsp&nbsp数量：<b>$arOrderInfo['num']</b>&nbsp&nbsp小计：￥<b>$arOrderInfo['total_price']</b></p>
+               </div>
+           </div>  
+		</div>
+                {if $arOrderInfo['status'] !=4}
+		<div class="footer">
+			<span>实付款：<b>￥$arOrderInfo['real_price']</b><span>
+			<a {if $arOrderInfo['status']==1}href="javascript:void(0);"  id="go_pay" class='go_pay' {else} href="hmbox://cn.747.box/goods?id={$arOrderInfo['goods_id']}" id="buy_2" {/if}>{$arOrderInfo['goto_name']}</a>
+		</div>
+                {/if}
+	</div>
+	<div id="order_sc">
+		<img src="/static/images/00.gif" />
+		<span>订单已生成</span>
+		<p>正在前往支付宝支付...</p>
+	</div>
+	<input type='hidden' id='sid' value="{$sid}">
+	<input type='hidden' id='osn' value="{$arOrderInfo['order_sn']}">
+        {include like_alert.html}
+	<script src="/static/js/jquery-1.7.min.js"></script>
+	<script>
+		$('.go_pay').click(function()
+		{
+			var osn = $('#osn').val();
+			var sid = $('#sid').val();
+			$("#order_sc").show();
+			$.ajax({
+				url: "/api/order/payOrder",
+				data: "session_id=" + sid + "&osn=" + osn,
+				type: "POST",
+				dataType: "json",
+				success: function (re) {
+					$("#lodd").hide();
+					var code = re['code'];
+					if (code == '200') {
+						$("#order_sc").show();
+						location.href = re['data'];
+						//$("#lodd").hide();
+						}else if(code == '500'){
+                                                like_alert("支付失败，请重新支付");
+						$("#order_sc").hide();
+					}
+
+				}
+			})
+		});
+	</script>
+</body>
+</html>

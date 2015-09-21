@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="format-detection" content="telephone=no" />
+    <title>确认订单</title>
+    <link rel="stylesheet" type="text/css"  href="/static/css/confirm_order.css" />
+</head>
+<body>
+	<div id="order_wrap">
+		<div class="header">
+			
+			{if $arAddress['name']==''}	<p class="no_add" onclick="window.location='/api/addressinfo/addaddress?session_id={$sid}&default=y&linkfrom=2&goods_id={$arGoods['goods_id']}'">请填写收货地址</p>{else}
+			<div class="have_add" onclick="window.location='/api/addressinfo/orderaddressmanage?session_id={$sid}&goods_id={$arGoods['goods_id']}&addressId={$arAddress['id']}'">
+				<p>
+				<b class="name" id="buyer_name">{$arAddress['name']}</b> <b class="tel">{$arAddress['receive_tel']}</b>
+				<span>{$arAddress['address']}</span>
+				</p>	
+			</div>
+			{/if}
+		</div>
+		<div class="cont">
+			<h6>商品信息</h6>
+			<div class="cont_box">
+				<dl>
+					<dt><img src="{$arGoods['picture']}" /></dt>
+					<dd>
+					<p>{$arGoods['goods_name']}</p>
+					<span>{$arGoods['title']}</span>
+					</dd>
+				</dl>
+				<div style="clear:both"></div>
+				<div class="cont_num"><span>数量</span><p><input type="button" value="" id="btn_jian" disabled='disabled'/><input type="text" value="1" name='num' id="num_val" readonly="readonly" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/><input type="button" value="" id="btn_jia" /></p></div>
+
+				<div class="obj_rmb">
+					<p><span>￥{$trad}</span>运费：</p>
+					<p><span id="false_pric">￥{$arGoods['price']}</span>商品总额：</p>
+					<p><span><b id="true_pric">￥{$arGoods['true_price']}</b></span>实付款（含运费）：</p>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" name="goods_id" id="goods_id" value="{$arGoods['goods_id']}">
+		<input type="hidden" name="sid" id="sid" value="{$sid}">
+		<input type="hidden" name="trad" id="trad" value="{$trad}">
+		<input type="hidden" name="max_num" id="max_num" value="{$arGoods['max_num']}">
+		<input type="hidden" name="addressId " id="addressId" value="{$arAddress['id']}">
+                <input type="hidden" name="oldprice" id="oldprice" value="{$arGoods['price']}">
+		<input type="hidden" name="price" id="price" value="{if $arGoods['is_promot']>0 && $arGoods['promot']>1}{$arGoods['promot']}{else}{$arGoods['price']}{/if}">
+		<div class="footer">
+			<span>实付款：<b id="rmb">￥{$arGoods['true_price']}</b><span>
+			<a href="javascript:pay()" id="lodd">提交订单</a>
+		</div>
+	</div>
+
+	<div id="order_sc">
+		<img src="/static/images/00.gif" />
+		<span>订单已生成</span>
+		<p>正在前往支付宝支付...</p>
+	</div>
+        {include like_alert.html}
+	<script type="text/javascript" src="/static/js/jquery-1.7.min.js"></script>
+	<script type="text/javascript" src="/static/js/confirm_order.js"></script>
+</body>
+</html>

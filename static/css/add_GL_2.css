@@ -1,0 +1,89 @@
+html {font-size: 62.5%;/*10 ÷ 16 × 100% = 62.5%*/}
+body {font-size: 1.4rem;/*1.4 × 10px = 14px */}
+body{_overflow:auto;_height:100%;margin:0 auto;font: 13px/1.231 arial,helvetica,clean,sans-serif;}
+*{
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+}
+ul li, ol li{
+	list-style: none;
+}
+html,body{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	background: #f0f0f6;
+}
+.have_add{
+	background:#fff;
+	border-top: 1px solid #e5e5e5;
+	border-bottom: 1px solid #e5e5e5;
+	margin: 11px 0;
+	position: relative;
+
+}
+.have_add p{
+	line-height: 2rem;
+	padding:15px 1.5rem;
+	color: #333333;
+	font-size: 1.3rem;
+}
+.have_add p .name{
+	background: url(../images/or_pic5.png) no-repeat left center;
+	background-size: 1.2rem 1.3rem;
+	padding-left: 1.5rem;
+	height: 1.5rem;
+	display: inline-block;
+	line-height: 1.5rem;
+	font-weight: normal;
+}
+.have_add p .tel{
+	background: url(../images/or_pic6.png) no-repeat left center;
+	background-size: 0.8rem 1.3rem;
+	padding-left: 1.2rem;
+	height: 1.5rem;
+	display: inline-block;
+	line-height: 1.5rem;
+	font-weight: normal;
+	float: right;
+}
+.have_add span{
+	display: block;
+	color: #333333;
+	font-size: 1.3rem;
+}
+.have_add span b{
+	color: #32ce02;
+	font-weight: normal;
+}
+.have_add ul{
+	border-top: 1px solid #e5e5e5;
+	height: 45px;
+	display: -moz-box;
+    display: -webkit-box;
+    display: box;
+}
+.have_add ul li{
+	line-height: 45px;
+	-moz-box-flex:1; /* Firefox */
+	-webkit-box-flex:1; /* Safari 和 Chrome */
+	box-flex:1;
+	text-align: center;
+	color: #555555;
+	font-size: 1.2rem;
+}
+
+#add_add{
+	width: 80%;
+	display: block;
+	color: #fff;
+	height: 40px;
+	line-height: 40px;
+        margin:25px 0;
+	margin-left: 10%;
+	background:#2882e2;
+	text-align: center;
+	border-radius: 5px;
+	font-size: 1.8rem;
+}

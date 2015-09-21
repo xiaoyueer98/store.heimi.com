@@ -1,0 +1,72 @@
+[product]
+
+;基本配置
+application.ext                             =   'php'
+application.directory                       =   APP_PATH "/application"
+application.library                         =   APP_PATH "/library"
+application.bootstrap                       =   APP_PATH "/application/Bootstrap.php"
+application.cache_config                    =   1
+application.baseUri                         =   "/"
+application.view.ext                        =   'html'
+application.modules                         =   'Index,Api,Order,User,Pay'
+application.dispatcher.defaultModule        =   'Index'
+application.dispatcher.defaultController    =   'index'
+application.dispatcher.defaultAction        =   'index'
+;静态服务器配置
+static.server				    =	"/static"
+;错误设置
+application.dispatcher.throwException       =   1
+application.dispatcher.catchException       =   1   
+;系统配置
+application.system.display_errors           =   1
+application.system.error_reporting          =   1   
+;数据库服务器配置
+database.user.driver                        =   'MYSQL'             
+database.user.master.host                   =   '10.1.1.2'
+database.user.master.port                   =   '3306'
+database.user.master.username               =   'db_user'  
+database.user.master.password               =   'db_user'
+database.user.master.default                =   'user_db'
+database.user.master.charset                =   'UTF8'
+;盒子商城
+database.mall.driver                        =   'MYSQL'             
+database.mall.master.host                   =   '10.1.1.2'
+database.mall.master.port                   =   '3306'
+database.mall.master.username               =   'db_user'  
+database.mall.master.password               =   'db_user'
+database.mall.master.default                =   'mall_db'
+database.mall.master.charset                =   'UTF8'
+
+;redis服务器配置
+redis.user.host                             =   '10.0.2.14'
+redis.user.port                             =   6381
+redis.session.host                          =   '10.0.3.14'
+redis.session.port                          =   '6399'
+;抓取联通ccid列表
+redis.ccidlist.host                         =   '10.0.2.14'
+redis.ccidlist.port                         =   '6385'
+;redis盒子商品配置
+redis.mall.host								=	'10.0.2.14'
+redis.mall.port								=	6386
+
+redis.black.host                            =   '10.0.2.14'
+redis.black.port                            =   6382
+;sms_cluster服务器配置
+sms_cluster = "10.1.1.5:8007,10.1.1.6:8007"
+;memcache服务器配置
+memcache.user.host                          = "10.0.2.15"
+memcache.user.port                          = 11211
+
+;支付平台
+pay.host                                    = 'http://alipay_callback.wifigo.cn/core_charge_service/payService'
+pay.mark                                    = 1005
+
+;UID生成器配置
+generator.host                              =   '10.1.1.5'
+generator.port                              =   9001
+mail.host                                   =   '10.0.2.7'
+mail.port
+
+;商城域名
+heimi.appstore.host							=	'http://store.747.cn'
+

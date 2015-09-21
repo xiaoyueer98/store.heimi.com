@@ -1,0 +1,228 @@
+html {font-size: 62.5%;/*10 ÷ 16 × 100% = 62.5%*/}
+body {font-size: 1.4rem;/*1.4 × 10px = 14px */}
+body{_overflow:auto;_height:100%;margin:0 auto;font: 13px/1.231 arial,helvetica,clean,sans-serif;}
+*{
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+}
+ul li, ol li{
+	list-style: none;
+}
+html,body{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	background: #f0f0f6;
+	overflow-x: hidden;
+}
+#order_wrap{
+	width: 100%;
+	height: 100%;
+}
+
+.order_cont{
+	margin: 10px 0;
+	border-bottom: 1px solid #e5e5e5;
+	border-top: 1px solid #e5e5e5;
+	background: #fff;
+}
+
+.order_top{
+	border-bottom: 1px solid #e5e5e5;
+	height: 35px;
+	display: -moz-box;
+    display: -webkit-box;
+    display: box;
+    position: relative;
+}
+.or_status{
+	color: #555;
+	font-size: 1.4rem;
+	padding-left: 1rem;
+	line-height: 35px;
+	width: 28%;
+	display: block;
+}
+
+.or_num{
+	color: #555555;
+	font-size: 1.2rem;
+	display: block;
+    width: 55%;
+    line-height: 35px;
+}
+
+.remove{
+	background:  url(../images/or_pic20.png) no-repeat 10px center;
+	background-size:1.7rem 1.5rem; 
+	width: 3.4rem;
+    padding: 5px 0;
+  	height: 25px;
+    border-left: 1px solid #e5e5e5;
+    position: absolute;
+    right: 1rem;
+}
+
+.order_cont dl{
+	margin-top: 10px;
+	height: 80px;
+
+}
+.order_cont dl dt{
+	float: left;
+	border: 1px solid #e5e5e5;
+	margin-left: 1rem;
+	width: 60px;
+	height: 60px;
+	margin-right: 10px;
+}
+.order_cont dl dt img{
+	display: block;
+	width: 40px;
+	vertical-align: middle;
+	margin-top: 10px;
+	margin-left: 8px;
+}
+.order_cont dl dd .or_tit{
+	color: #333333;
+	font-size: 1.4rem;
+	
+}
+.order_cont dl dd .or_cont{
+	color: #999999;
+	font-size: 1.2rem;
+	padding-top: 8px;
+}
+.order_cont dl dd .or_cont b{
+	font-weight: normal;
+}
+.order_bot{
+	height: 48px;
+        border-top: 1px solid #e5e5e5;
+}
+.order_bot span{
+	line-height: 48px;
+	padding-left: 1rem;
+	color: #333333;
+	font-size: 1.4rem;
+
+}
+
+.order_bot #to_pay{
+	float: right;
+	margin-right: 1.5rem;
+	display: block;
+	width: 7.8rem;
+	height: 2.8rem;
+	line-height:2.8rem;
+	background: #ff4400;
+	text-align: center;
+	color: #fff;
+	border-radius: 5px;
+	margin-top: 8px;
+	font-size: 1.4rem;
+	border: 1px solid #ff4400;
+}
+
+.order_bot #buy_2{
+	float: right;
+	margin-right: 1.5rem;
+	display: block;
+	width: 7.8rem;
+	height: 2.8rem;
+	line-height:2.8rem;
+	text-align: center;
+	color: #fff;
+	border-radius: 5px;
+	margin-top: 8px;
+	font-size: 1.4rem;
+	border: 1px solid #ff4400;
+	color: #ff4400;
+}
+
+#order_sc{
+	width: 100%;
+	height:100%;
+	position: fixed;
+	left: 0;
+	top: 0;
+	background: url(../images/or_pic17.png) no-repeat;
+	background-size: 100% 100%;
+	display: none;
+
+}
+#order_sc img{
+	position: absolute;
+	left: 50%;
+	margin-left:-3.3rem;
+	top:135px; 
+	width: 6.5rem;
+}
+#order_sc span{
+	display: block;
+	margin-top: 230px;
+	text-align: center;
+	font-size: 1.8rem;
+	color: #ff4400;
+
+}
+#order_sc p{
+	display: block;
+	margin-top: 5px;
+	text-align: center;
+	font-size: 1.4rem;
+	color: #ffffff;
+
+}
+
+#confirm_zhezhao{
+	width: 100%;
+	height:100%;
+	position: fixed;
+	left: 0;
+	top: 0;
+	background: url(../images/or_pic17.png) no-repeat;
+	background-size: 100% 100%;
+	display: none;
+}
+#confirm , #confirm_2{
+	width: 240px;
+	height: 95px;
+	position: fixed;
+	top:150px;
+	left: 50%;
+	margin-left: -120px;
+	background: #eae8ea;
+	border-radius: 10px;
+	
+}
+
+#confirm p ,#confirm_2 p{
+	font-size: 1.5rem;
+	text-align: center;
+	padding: 18px 0;
+	color: #ff4400;
+	font-weight: bold;
+}
+
+#confirm ul {
+	border-top:1px solid #c4c4c4;
+}
+#confirm ul li{
+	float: left;
+	width: 119px;
+	text-align: center;
+	line-height: 40px;
+	font-size: 1.5rem;
+}
+
+#confirm_2 span{
+	text-align: center;
+	line-height: 40px;
+	font-size: 1.5rem;
+	border-top:1px solid #c4c4c4;
+	display: block;
+}
+
+

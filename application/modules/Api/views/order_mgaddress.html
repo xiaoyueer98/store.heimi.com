@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="format-detection" content="telephone=no" />
+    <title>收货地址管理</title>
+    <link rel="stylesheet" type="text/css"  href="/static/css/add_GL.css" />
+</head>
+<body>
+	<div id="gl_wrap">
+                {include like_alert.html}
+		<div class="header">
+			<a {if $arAddressTotal<10 } href="/api/addressinfo/addaddress?linkfrom=2&session_id={$session_id}&goods_id={$goods_id}" {else} href="javascript:like_alert('对不起，您的地址信息过多');" {/if} ><p>添加新地址</p></a>
+		</div>
+                {loop $arAddressList $key $val}	
+                {if $val['is_default'] == 1}
+                <a href="/api/order/handleOrder?session_id={$session_id}&goods_id={$goods_id}&addressId={$val['id']}">
+		<div class="have_add">
+			<p>
+				<b class="name" style="color:#333;">{$val['name']}</b> <b class="tel" style="color:#333;">{$val['receive_tel']}</b>
+				<span><b>【默认】</b>{$val['province']}{$val['city']}{$val['area']}{$val['detail']}</span>
+                                {if $addressId == $val['id']}<img src="/static/images/or_pic15.png" />{/if}
+                                <a href="/api/addressinfo/updateaddress?addressId={$val['id']}&linkfrom=2&session_id={$session_id}&goods_id={$goods_id}&addressId_use={$addressId}">
+                                <span class="edit"></span>
+                                </a>
+			</p>                        
+		</div>
+                </a>
+                {else}
+                <a href="/api/order/handleOrder?session_id={$session_id}&goods_id={$goods_id}&addressId={$val['id']}">
+		<div class="have_add">
+			<p>
+				<b class="name" style="color:#333;">{$val['name']}</b> <b class="tel" style="color:#333;">{$val['receive_tel']}</b>
+				<span>{$val['province']}{$val['city']}{$val['area']}{$val['detail']}</span>
+                                {if $addressId == $val['id']}<img src="/static/images/or_pic15.png" />{/if}
+                                <a href="/api/addressinfo/updateaddress?addressId={$val['id']}&linkfrom=2&session_id={$session_id}&goods_id={$goods_id}&addressId_use={$addressId}">
+                                <span class="edit"></span>
+                                </a>
+			</p>	
+		</div>
+                </a>
+                {/if}
+                {/loop}
+	</div>
+</body>
+</html>
